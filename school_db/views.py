@@ -21,6 +21,7 @@ def example_solution(request):
     return complete(request)
 
 
+
 # Supporting Query Method Documentation:
 """
 https://docs.djangoproject.com/en/4.0/ref/models/querysets/#all
@@ -59,7 +60,13 @@ SELECT `school_db_student`.`id`,
 # Print out each student's full name and gpa to the terminal
 def problem_one(request):
 
-    return complete(request)
+  students = Student.objects.filter(gpa__gt = 3).order_by('-gpa')
+  print(len(students))
+
+  for student in students:
+    print(f'Full Name: {student.first_name} {student.last_name} GPA: {student.gpa}')
+
+  return complete(request)
 
 
 # Supporting Query Method Documentation:
