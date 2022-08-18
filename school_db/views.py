@@ -398,22 +398,10 @@ SELECT `school_db_student`.`id`,
 #NOT FINISHED!!!
 def bonus_problem(request):
 
-  courses = Course.objects.all()
-  num_of_instructors = Instructor.objects.count()
-  count_list = []
-
-  for x in range(num_of_instructors):       #list with 0 representing each instructor
-    count_list.append(0)
-
-  for x in range(len(courses)):               #loop through all courses 
-    for num in range(num_of_instructors):                #find course instructor, add 1 to the count list 
-      if courses[x].instructor == num:
-        count_list[num] +=1
-
-  for x in range(len(count_list)):         #if count list has a 1, print the instructor name that has that id
-    if count_list[x] == 1:
-      instructor = Instructor.objects.get(id = x)
-      print(f'Instructor Name: {instructor.first_name} {instructor.last_name}')
+  #courses = Course.objects.all()
+  instructors = Instructor.objects.annotate(num_courses_teaching = Count('course')).filter(num_courses_teaching = 1)
+  for instructor in instructors:
+    print(f'Full Name: {instructor.first_name} {instructor.last_name} \n {instructor.num_courses_teaching}')
 
 
   return complete(request)
